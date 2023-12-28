@@ -1,0 +1,29 @@
+global !p
+def complete(t, opts):
+	if t:
+		opts = [ m[len(t):] for m in opts if m.startswith(t) ]
+	if len(opts) == 1:
+		return opts[0]
+	if len(opts) == 0:
+		return ''
+	return '(' + '|'.join(opts) + ')'
+endglobal
+
+snippet if( "condition" A
+if($1){
+	$2
+}
+$0
+endsnippet
+
+snippet for( "loop" A
+for(int $1 = ${2:0}; `!p snip.rv = t[1]` < ${3:n}; ++`!p snip.rv = t[1]`){
+	$4
+}
+$0
+endsnippet
+
+snippet incl "include" A
+#include
+endsnippet
+

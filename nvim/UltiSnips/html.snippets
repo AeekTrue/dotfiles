@@ -1,0 +1,44 @@
+snippet html "HTML template"
+<!DOCTYPE html>
+<html>
+<head>
+<title>$1</title>
+</head>
+<body>
+$0
+</body>
+</html>
+endsnippet
+
+snippet {{ "placeholder"
+{{ $1 }}$0
+endsnippet
+
+snippet {% "block"
+{% $1 %}
+$0
+{% $2 %}
+endsnippet
+
+snippet extends "extends"
+{% extends ${1:'base.html'} %}$0
+endsnippet
+
+snippet block "block"
+{% block $1 %}
+$0
+{% endblock %}
+endsnippet
+
+snippet for "for"
+{% for $1 %}
+$0
+{% endfor %}
+endsnippet
+
+snippet if "if"
+{% if $1 %}
+$0
+{% endif %}
+endsnippet
+

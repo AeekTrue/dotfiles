@@ -1,0 +1,11 @@
+snippet begin "begin" 
+begin
+	$1
+end;
+endsnippet
+
+snippet if "condition" A
+if $1 then
+`!p snip.rv='' if t[0].startswith('begin') else '\t'`$0
+endsnippet
+

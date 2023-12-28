@@ -1,0 +1,167 @@
+global !p
+envs = ['theorem', 'proof', 'equation', 'gather', 'definition', 'enumerate', 'state', 'prop', 'conseq']
+def math():
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+def comment(): 
+	return vim.eval('vimtex#syntax#in_comment()') == '1'
+def env(name):
+	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
+	return x != '0' and y != '0'
+def snakify(string):
+	return string.lower().replace(' ', '_').replace('.', '')[:32]
+def complete(t, opts):
+	if t:
+		opts = [ m[len(t):] for m in opts if m.startswith(t) ]
+	if len(opts)==1:
+		return opts[0]
+	if len(opts)==0:
+		return ''
+	return '(' + '|'.join(opts) + ')'
+endglobal
+
+snippet pac "Package" b
+\usepackage[${1:options}]{${2:package}}$0
+endsnippet
+
+snippet beg "env" b
+\begin{$1`!p snip.rv=complete(t[1], envs )`}
+	$0
+\end{$1`!p snip.rv=complete(t[1], envs)`}
+endsnippet
+
+context "env('enumerate')"
+snippet - "item" b
+\item $0;
+endsnippet
+
+snippet im "inline mode" A
+\( $1 \)$0
+endsnippet
+
+snippet 've([a-zA-z0])' "vector" rA
+\ve{`!p snip.rv=match.group(1)`}$0
+endsnippet
+
+
+snippet part "part{}" bA
+\part{$1} % (fold)
+\label{prt:`!p snip.rv=snakify(t[1])`}
+	$0
+%part `!p snip.rv=snakify(t[1])` (end)
+endsnippet
+
+snippet sec "section{}" bA
+\section{$1} % (fold)
+\label{sec:`!p snip.rv=snakify(t[1])`}
+	$0
+% section `!p snip.rv=t[1]` (end)
+endsnippet
+
+snippet chap "chapter{}" bA
+\chapter{$1} % (fold)
+\label{sec:`!p snip.rv=snakify(t[1])`}
+	$0
+% chapter `!p snip.rv=snakify(t[1])` (end)
+endsnippet
+
+context "math()"
+snippet // "Fraction" iA
+\\frac{$1}{$2}$0
+endsnippet
+
+snippet / "Fraction" i
+\\frac{${VISUAL}}{$1}$0
+endsnippet
+
+snippet xst "exists" A
+\exists
+endsnippet
+
+snippet any "for all" A
+\forall
+endsnippet
+
+snippet => "implies" Ai
+\implies
+endsnippet
+
+snippet <=> "iff" Ai
+\iff
+endsnippet
+
+snippet =< "implied by" Ai
+\impliedby
+endsnippet
+
+context "math()"
+snippet iff "iff" Ai
+\iff
+endsnippet
+
+snippet lim "Limit" A
+\lim_{${1:x \to x_0}}{${2:f(x)}}$0
+endsnippet
+
+context "math()"
+snippet sum "Sum" A
+\sum\limits_{${1:i=0}}^{${2:n}}$0
+endsnippet
+
+snippet lix "Limit" A
+\lim_{\Delta x \to 0}{${1:\frac{\Delta y}{\Delta x}}}
+endsnippet
+
+context "math()"
+snippet eps "eps" A
+\varepsilon
+endsnippet
+
+snippet dt "delta" Ai
+\Delta 
+endsnippet
+
+context "math()"
+snippet le "less eq" A
+\le
+endsnippet
+
+context "math()"
+snippet lt "less" A
+\lt
+endsnippet
+
+context "math()"
+snippet ge "gt eq" A
+\ge
+endsnippet
+context "math()"
+snippet ne "n eq" A
+\ne
+endsnippet
+
+context "math()"
+snippet gt "gt" A
+\gt
+endsnippet
+
+context "math()"
+snippet ,, "comma" Ai
+,\quad 
+endsnippet
+
+context "math()"
+snippet ,; "nl" Ai
+,\\\\
+
+endsnippet
+
+context "math()"
+snippet .; "nl." Ai
+.\\\\
+
+endsnippet
+
+context "math()"
+snippet hra "" A
+\hookrightarrow
+endsnippet
